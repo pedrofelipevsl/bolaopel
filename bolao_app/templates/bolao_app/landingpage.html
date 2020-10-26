@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{%block conteudo%}
+    <h1 class="mt-5"> Bolão da Sorte Colocar a logo e título do site (Landing Page) </h1>
+    
+    <div class="jumbotron">
+        <h1 class="display-4">Seja bem vindo ao Bolão da Sorte!</h1>
+        <p class="lead">Aqui você pode fazer suas apostas com segurança e confiabilidade, faça seu cadastro e comece agora com suas apostas.</p>
+        <hr class="my-4">
+        <p>Faça seu login ou cadastre-se para ter acesso ao painel de apostas.</p>
+        <a class="btn btn-danger btn-lg btn-block" href="{% url 'login' %}" role="button">Login</a>
+        <a class="btn btn-primary btn-lg btn-block" href="{% url 'register' %}" role="button">Cadastra-se</a>
+    </div>
+    
+
+{%endblock%}

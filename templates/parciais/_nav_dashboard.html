@@ -1,0 +1,33 @@
+  <!-- Navigation -->
+{% block nav %}
+ 
+ <ul class="nav nav-pills justify-content-end">
+     
+      {% block nav-home%}<li class="nav-item ">
+        <a class="navbar-brand nav-link active" href="{% url 'dashboard' %}">Home</a>
+      </li>{% endblock %}
+      
+      {% block nav-rankin%}<li class="nav-item">
+        <a class="navbar-brand nav-link" href="{% url 'landingpage' %}">Ranking</a>
+      </li>{% endblock %}
+      
+      {% block nav-bets%}<li class="nav-item">
+        <a class="navbar-brand nav-link" href="{% url 'landingpage' %}">Minhas Apostas</a>
+      </li>{% endblock %}
+      
+      {% block nav-cedit%}<li class="nav-item">
+        <a class="navbar-brand nav-link" href="{% url 'landingpage' %}">Adicionar Crédito</a>
+      </li>{% endblock %}
+      
+      {% if user.is_superuser %} <!-- Se for um administrador do sistema mostra esta opção-->
+        {% block nav-result%}<li class="nav-item">
+          <a class="navbar-brand nav-link" href="{% url 'landingpage' %}">Regitrar Resultado da Partida</a>
+        </li>{% endblock %}
+      {% endif %}
+      
+      {% block nav-exit%}<li class="nav-item">
+        <a class="navbar-brand nav-link" href="{% url 'logout' %}">Sair</a>
+      </li>{% endblock %}
+</ul>
+
+{% endblock %}

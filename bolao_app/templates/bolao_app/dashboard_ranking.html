@@ -1,0 +1,69 @@
+<style>
+  #container {
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding : 20px;
+      }
+
+</style>
+
+{% extends 'base.html' %}
+{% block  titulo%} Ranking dos Apostadores | {% endblock  %}
+
+{% block conteudo %}
+  <!-- Navigation -->
+  <ul class="nav nav-pills justify-content-end">
+    <li class="nav-item ">
+      <a class="navbar-brand nav-link " href="{% url 'dashboard' %}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link active" href="{% url 'ranking' %}">Ranking</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'bets' %}">Minhas Apostas</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'add_credit' %}">Adicionar Crédito</a>
+    </li>
+    {% if user.is_superuser %} <!-- Se for um administrador do sistema mostra esta opção-->
+      <li class="nav-item">
+        <a class="navbar-brand nav-link" href="{% url 'admin_register_result' %}">Registrar Resultado da Partida</a>
+      </li>
+    {% endif %}
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'logout' %}">Sair</a>
+    </li>
+</ul>
+
+
+<h1 class="display-3">Ranking dos Apostadores</h1>
+<p>
+    Seja bem-vindo <b> {{ user.first_name }} {{ user.last_name }}
+</p>
+<div id="container">
+
+        <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Qtd. de Vitórias</th>
+          <th>Valor Ganho em Premiações</th>
+      </thead>
+      <tbody>
+        
+        {% for usuario in usuarios %} <!-- apostas e não biolao-->
+              <tr>
+                <td>{{ usuario.id }}</td>
+                <td>{{ usuario.username }}</td>
+                <td>{{ usuario.apostadorusuario.qtd_vitorias }}</td>
+                <td>{{ usuario.apostadorusuario.premiacao_ganha  }}</td>
+              </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

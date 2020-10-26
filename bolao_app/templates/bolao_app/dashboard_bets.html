@@ -1,0 +1,105 @@
+<style>
+  #container {
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding : 20px;
+      }
+
+</style>
+
+{% extends 'base.html' %}
+{% block  titulo%} Lista de minhas apostas | {% endblock  %}
+
+{% block conteudo %}
+  <!-- Navigation -->
+  <ul class="nav nav-pills justify-content-end">
+    <li class="nav-item ">
+      <a class="navbar-brand nav-link " href="{% url 'dashboard' %}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'ranking' %}">Ranking</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link active" href="{% url 'bets' %}">Minhas Apostas</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'add_credit' %}">Adicionar Crédito</a>
+    </li>
+    {% if user.is_superuser %} <!-- Se for um administrador do sistema mostra esta opção-->
+      <li class="nav-item">
+        <a class="navbar-brand nav-link" href="{% url 'admin_register_result' %}">Regitrar Resultado da Partida</a>
+      </li>
+    {% endif %}
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'logout' %}">Sair</a>
+    </li>
+</ul>
+
+<h1 class="display-3">Minhas Apostas</h1>
+<p>
+    Seja bem-vindo <b> {{ user.first_name }} {{ user.last_name }}
+</p>
+<div id="container">
+  
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome do Bolão</th>
+          <th>Estádio</th>
+          <th>Data/Hora da Partida</th>
+          <th>Palpite da Aposta</th>
+          <th>Resultado da Partida</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for aposta in apostas %} <!-- apostas e não biolao-->
+              <tr>
+                <td>{{ aposta.bolao.id }}</td>
+                <td>{{ aposta.bolao }}</td>
+                <td>{{ aposta.bolao.partida.estadio}}</td>
+                <td> <b> Início: </b> {{ aposta.bolao.partida.data_hora_inicio }} </br>
+                     <b> Final: </b> {{ aposta.bolao.partida.data_hora_fim }}
+                </td>
+                <td> 
+                   {{ aposta.bolao.partida.selecao_desafiante }} {{ aposta.qtd_gols_desafiante }} x 
+                   {{ aposta.qtd_gols_visitante }} {{ aposta.bolao.partida.selecao_visitante}} {% comment %} palpite da aposta {% endcomment %}
+                </td>
+                <td> 
+                  {{ aposta.bolao.partida.selecao_desafiante }} {{ aposta.bolao.partida.gols_desafiante }} x 
+                   {{ aposta.bolao.partida.gols_visitante }} {{ aposta.bolao.partida.selecao_visitante}} {% comment %} resultado da partida {% endcomment %}
+                  
+                </td>
+              </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+</div>
+{% comment %} 
+<!-- botão do modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ExemploModalCentralizado">Abrir</button>
+<!-- Modal -->
+<div class="modal fade" id="ExemploModalCentralizado" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="TituloModalCentralizado">Título do modal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary">Salvar mudanças</button>
+      </div>
+    </div>
+  </div>
+</div>
+ {% endcomment %}
+{% endblock %}

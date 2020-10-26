@@ -1,0 +1,57 @@
+<style>
+  #container {
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding : 20px;
+      }
+
+</style>
+
+{% extends 'base.html' %}
+{% block  titulo%} Adicionar crédito | {% endblock  %}
+
+{% block conteudo %}
+  <!-- Navigation -->
+  <ul class="nav nav-pills justify-content-end">
+    <li class="nav-item ">
+      <a class="navbar-brand nav-link " href="{% url 'dashboard' %}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'ranking' %}">Ranking</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'bets' %}">Minhas Apostas</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link active" href="{% url 'add_credit' %}">Adicionar Crédito</a>
+    </li>
+    {% if user.is_superuser %} <!-- Se for um administrador do sistema mostra esta opção-->
+      <li class="nav-item">
+        <a class="navbar-brand nav-link" href="{% url 'admin_register_result' %}">Regitrar Resultado da Partida</a>
+      </li>
+    {% endif %}
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'logout' %}">Sair</a>
+    </li>
+</ul>
+
+<h1 class="display-3">Adicionar Créditos</h1>
+<p>
+    Seja bem-vindo <b> {{ user.first_name }} {{ user.last_name }}
+</p>
+{% include 'parciais/_messages.html' %}
+<div id="container">
+  <form method="POST" action="{% url 'add_credit' %}">
+        {% csrf_token %}
+      <div class="form-group">
+        <label>Crédito atual</label>
+        <input type="text" disabled="" name="credito_atual" value="{{ apostador_credito.credito }}" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Infome o valor que deseja acicionar em céditos</label>
+        <input type="number" name="valor_adicional" required value="" min="0" max="100" step="0.01" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary">Adicionar Crédito</button>
+  </form>
+</div>
+{% endblock %}

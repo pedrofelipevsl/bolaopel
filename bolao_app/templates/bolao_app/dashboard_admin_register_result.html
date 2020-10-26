@@ -1,0 +1,93 @@
+<style>
+  #container {
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding : 20px;
+      }
+
+</style>
+
+{% extends 'base.html' %}
+{% block  titulo%} Registra resultado da partida | {% endblock  %}
+
+{% block conteudo %}
+  <!-- Navigation -->
+  <ul class="nav nav-pills justify-content-end">
+    <li class="nav-item ">
+      <a class="navbar-brand nav-link " href="{% url 'dashboard' %}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'ranking' %}">Ranking</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'bets' %}">Minhas Apostas</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'add_credit' %}">Adicionar Crédito</a>
+    </li>
+    {% if user.is_superuser %} <!-- Se for um administrador do sistema mostra esta opção-->
+      <li class="nav-item">
+        <a class="navbar-brand nav-link active" href="{% url 'admin_register_result' %}">Regitrar Resultado da Partida</a>
+      </li>
+    {% endif %}
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'logout' %}">Sair</a>
+    </li>
+</ul>
+
+<h1 class="display-3">Registar Resultado das Partidas (Admin)</h1>
+<p>
+    Seja bem-vindo <b> {{ user.first_name }} {{ user.last_name }}
+</p>
+{% include 'parciais/_messages.html' %}
+
+<div id="container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome do Bolão</th>
+          <th>Estádio</th>
+          <th>Data/Hora da Partida</th>
+          <th>Resul. Final: Gols do Desaf.</th>
+          <th>esul. Final: Gols do Visit.</th>
+          <th>Registrar Resultado</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for partida in partidas %} <!-- partidas -->
+         <form method="POST" action="{% url 'admin_register_result' %}">
+              {% csrf_token %}
+              <input type="hidden" id="id_partida" name="id_partida" value="{{ partida.id }}" />
+              <input type="hidden" id="id_bolao" name="id_bolao" value="{{ partida.id }}" /> <!-- rever -->
+              <tr>
+                <td>{{ partida.id }}</td>
+                <td>{{ partida.bolao }}</td>
+                <td>{{ partida.estadio }}</td>
+                <td> <b> Início: </b> {{ partida.data_hora_inicio }} </br>
+                     <b> Final: </b> {{ partida.data_hora_fim }}
+                </td>
+                <td> 
+                  <div class="form-group">
+                    <label>{{ partida.selecao_desafiante.nome }}</label>
+                    <input type="number" name="gols_desaf" required value="" min="0" max="15" maxlength="2" class="form-control">
+                  </div>
+                </td>
+                <td> 
+                  <div class="form-group">
+                    <label>{{ partida.selecao_visitante.nome }}</label>
+                    <input type="number" name="gols_visit" required value="" min="0" max="15" maxlength="2" class="form-control">
+                  </div>
+                </td>
+                <td> 
+                  </br><button type="submit" class="btn btn-sm btn-danger">REGISTRAR</button>
+                </td>
+              </tr>
+        </form>
+        {% endfor %}
+
+      </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% load static %}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- icone de nosso sistema -->
+<link rel="icon" type="image/png" href="{% static '/favicon.png' %}"/>
+    
+    <!-- imagem de fundo inserida para todas as paginas -- media/background/copa-do-mundo.jpg -->
+    <style> 
+        body {
+            background-image: url(" {% static '/copa-do-mundo.jpg' %}");
+            // background-repeat: no-repeat, repeat-x;
+            //background-position: center, center;
+        }
+    </style>
+
+<!-- Bootstrap core CSS -->
+<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">

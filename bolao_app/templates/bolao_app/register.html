@@ -1,0 +1,46 @@
+<style>
+  #container {
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding : 20px;
+      }
+
+</style>
+
+{% extends 'base.html' %}
+{% block  titulo%} Cadastro do Apostador | {% endblock  %}
+
+{% block conteudo %}
+<h1 class="display-3">Cadastro de Apostador</h1>
+<div id="container">
+  <form method="POST" action="{% url 'register' %}">
+        {% include 'parciais/_messages.html' %}
+        {% csrf_token %}
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" name="nome" value="{{request.POST.nome}}" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Sobrenome</label>
+        <input type="text" name="sobrenome" value="{{request.POST.sobrenome}}" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" value="{{request.POST.email}}" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Usuário</label>
+        <input type="text" name="usuario" value="{{request.POST.usuario}}" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" name="senha" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Repetir a senha</label>
+        <input type="password" name="senha2" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary">Cadastrar-me</button>
+  </form>
+</div>
+{% endblock %}

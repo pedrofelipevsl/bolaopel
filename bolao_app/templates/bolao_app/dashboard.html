@@ -1,0 +1,96 @@
+<style>
+  #container {
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding : 20px;
+      }
+
+</style>
+{% extends 'base.html' %}
+{% block  titulo%} Painel de {{ user.first_name }} | {% endblock  %}
+
+
+{% block conteudo %}
+
+  <!-- Navigation -->
+  <ul class="nav nav-pills justify-content-end">
+    <li class="nav-item ">
+      <a class="navbar-brand nav-link active" href="{% url 'dashboard' %}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'ranking' %}">Ranking</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'bets' %}">Minhas Apostas</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'add_credit' %}">Adicionar Crédito</a>
+    </li>
+    {% if user.is_superuser %} <!-- Se for um administrador do sistema mostra esta opção-->
+      <li class="nav-item">
+        <a class="navbar-brand nav-link" href="{% url 'admin_register_result' %}">Regitrar Resultado da Partida</a>
+      </li>
+    {% endif %}
+    <li class="nav-item">
+      <a class="navbar-brand nav-link" href="{% url 'logout' %}">Sair</a>
+    </li>
+</ul>
+
+<h1 class="display-3">Painel do Apostador</h1>
+<p>
+    Seja bem-vindo <b> {{ user.first_name }} {{ user.last_name }} </b> seu SALDO atual é de : <b>R$ {{ apostador_credito.credito }}  </b>.
+    {% include 'parciais/_messages.html' %}
+</p>
+<div id="container">
+ 
+<table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome do Bolão</th>
+          <th>Estádio</th>
+          <th>Data/Hora da Partida</th>
+          <th>Gols Desafiante</th>
+          <th>Gols Visitante</th>
+          <th>Acão</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for bolao in boloes %}
+         <form method="POST" action="{% url 'dashboard' %}">
+              {% csrf_token %}
+              <input type="hidden" id="apostador" name="apostador" value="{{ user.id }}" />
+              <input type="hidden" id="bolao" name="bolao" value="{{ bolao.id }}" />
+              <tr>
+                <td>{{ bolao.id }}</td>
+                <td>{{ bolao.nome }}</td>
+                <td>{{ bolao.partida.estadio}}</td>
+                <td> <b> Início: </b> {{ bolao.partida.data_hora_inicio }} </br>
+                     <b> Final: </b> {{ bolao.partida.data_hora_fim }}
+                </td>
+                <td> 
+                  <div class="form-group">
+                    <label>{{ bolao.partida.selecao_desafiante.nome }}</label>
+                    <input type="number" name="gols_desaf" required value="" min="0" max="15" maxlength="2" class="form-control">
+                  </div>
+                </td>
+                <td> 
+                  <div class="form-group">
+                    <label>{{ bolao.partida.selecao_visitante.nome }}</label>
+                    <input type="number" name="gols_visit" required value="" min="0" max="15" maxlength="2" class="form-control">
+                  </div>
+                </td>
+                <td> 
+                  </br><button type="submit" class="btn btn-sm btn-danger">APOSTAR</button>
+                </td>
+              </tr>
+        </form>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
