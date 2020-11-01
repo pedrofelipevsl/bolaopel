@@ -229,7 +229,14 @@ def add_credit(request):
 @login_required(redirect_field_name='login')
 def admin_register_result(request):
     
-    #verifica as partidas que estao sem placar e que já foram finalizadas pelo sistema com base no horario de termino
+    # Verifica as partidas que estao sem placar e que ainda nao foram finalizadas pelo sistema com base no horario de termino
+    partidas = Partida.objects.filter(gols_desafiante=None).filter(gols_visitante=None).all()
+
+    # Verificar se exitem partidas que devem ser finalizadas pelo horário de termino
+    for partida in partidas:
+        partida.finalizar_partida()
+
+    # Verifica as partidas que estao sem placar e que já foram finalizadas pelo sistema com base no horario de termino
     partidas = Partida.objects.filter(gols_desafiante=None).filter(gols_visitante=None).filter(finalizada=True).all()
 
     if request.method != 'POST':
